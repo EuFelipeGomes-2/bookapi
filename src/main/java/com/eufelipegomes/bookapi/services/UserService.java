@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.eufelipegomes.bookapi.dtos.UpdateUserDto;
@@ -43,7 +45,11 @@ public class UserService {
 
   public UserModel createUser(UserModel userModel) {
     try {
-      UserModel user = userRepository.save(userModel);
+      String passwordEncoded = new BCryptPasswordEncoder().encode(userModel.getPassword());
+
+      UserModel newUser = new UserModel(userModel.getUsername(), userModel.getUseremail(), passwordEncoded);
+
+      UserModel user = userRepository.save(newUser);
 
       return user;
     } catch (CustomException e) {
