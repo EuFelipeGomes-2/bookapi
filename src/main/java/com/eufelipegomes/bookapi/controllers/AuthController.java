@@ -15,7 +15,7 @@ import com.eufelipegomes.bookapi.infra.security.TokenService;
 import com.eufelipegomes.bookapi.models.UserModel;
 
 @Controller
-@RequestMapping("auth")
+@RequestMapping("/auth")
 public class AuthController {
   @Autowired
   private AuthenticationManager authenticationManager;

@@ -2,6 +2,7 @@ package com.eufelipegomes.bookapi.models;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +17,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,6 +31,9 @@ public class UserModel implements UserDetails {
   private String username;
   private String password;
   private String useremail;
+
+  @OneToMany(mappedBy = "user")
+  private Set<BookModel> books;
 
   @Enumerated(EnumType.STRING)
   private UserRole role;

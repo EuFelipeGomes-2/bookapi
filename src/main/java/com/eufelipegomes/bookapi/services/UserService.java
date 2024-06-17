@@ -98,4 +98,14 @@ public class UserService {
 
   }
 
+  public Boolean verifyUserById(UUID userid) throws Exception {
+    try {
+      Boolean userExists = userRepository.existsById(userid);
+
+      return userExists;
+    } catch (Exception e) {
+      throw new Exception(e.getMessage());
+    }
+  }
+
 }

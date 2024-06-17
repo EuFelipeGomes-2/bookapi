@@ -1,0 +1,1 @@
+create index idx_books_bookid on public.books using btree (bookid);
