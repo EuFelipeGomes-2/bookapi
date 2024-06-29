@@ -32,11 +32,13 @@ public class SecurityConfigurations {
             .requestMatchers(HttpMethod.PUT, "/users/{id}").hasRole("USER")
             .requestMatchers(HttpMethod.DELETE, "/users/{id}").hasRole(
                 "USER")
-            .requestMatchers(HttpMethod.GET, "/books/{uid}").permitAll()
+            .requestMatchers(HttpMethod.GET, "/books/user/{uid}").hasRole("USER")
             .requestMatchers(HttpMethod.GET, "/books/").permitAll()
-            .requestMatchers(HttpMethod.POST, "/books/{uid}").permitAll()
-            .requestMatchers(HttpMethod.PUT, "/books/{uid}").permitAll()
-            .requestMatchers(HttpMethod.DELETE, "/books/{uid}").permitAll()
+            .requestMatchers(HttpMethod.POST, "/books/user/{uid}").hasRole("USER")
+            .requestMatchers(HttpMethod.PUT, "/books/book/{uid}").hasRole("USER")
+            .requestMatchers(HttpMethod.DELETE, "/books/book/{uid}").hasRole("USER")
+            .requestMatchers(HttpMethod.GET, "/books/notes/book/{bookid}").hasRole("USER")
+            .requestMatchers(HttpMethod.POST, "/books/notes/user/{userId}/book/{bookId}").hasRole("USER")
 
             .anyRequest().authenticated())
 

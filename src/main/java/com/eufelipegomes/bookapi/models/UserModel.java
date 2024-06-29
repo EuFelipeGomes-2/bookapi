@@ -10,6 +10,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.eufelipegomes.bookapi.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -33,7 +35,12 @@ public class UserModel implements UserDetails {
   private String useremail;
 
   @OneToMany(mappedBy = "user")
-  private Set<BookModel> books;
+  @JsonBackReference
+  private List<BookModel> books;
+
+  @OneToMany(mappedBy = "user")
+  @JsonBackReference
+  private List<NoteModel> notes;
 
   @Enumerated(EnumType.STRING)
   private UserRole role;
@@ -53,7 +60,6 @@ public class UserModel implements UserDetails {
   }
 
   public UserModel() {
-
   }
 
   public String getUsername() {
@@ -88,6 +94,22 @@ public class UserModel implements UserDetails {
     this.userid = userid;
   }
 
+  public List<BookModel> getBooks() {
+    return books;
+  }
+
+  public void setBooks(List<BookModel> books) {
+    this.books = books;
+  }
+
+  public List<NoteModel> getNotes() {
+    return notes;
+  }
+
+  public void setNotes(List<NoteModel> notes) {
+    this.notes = notes;
+  }
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     if (this.role == UserRole.ADMIN)
@@ -115,5 +137,4 @@ public class UserModel implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
-
 }

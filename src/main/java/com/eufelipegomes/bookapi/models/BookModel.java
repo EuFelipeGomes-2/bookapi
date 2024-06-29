@@ -1,13 +1,19 @@
 package com.eufelipegomes.bookapi.models;
 
+import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,7 +25,12 @@ public class BookModel {
 
   @ManyToOne
   @JoinColumn(name = "userid", referencedColumnName = "userid", nullable = false)
+  @JsonManagedReference
   private UserModel user;
+
+  @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+  @JsonManagedReference
+  private List<NoteModel> bookNotes;
 
   private String bookname;
   private String bookauthor;
@@ -31,8 +42,7 @@ public class BookModel {
   public BookModel() {
   }
 
-  public BookModel(String name, String author, String status, String description, Boolean completed,
-      Float rating) {
+  public BookModel(String name, String author, String status, String description, Boolean completed, Float rating) {
     this.bookname = name;
     this.bookauthor = author;
     this.bookstatus = status;
@@ -55,6 +65,14 @@ public class BookModel {
 
   public void setUser(UserModel user) {
     this.user = user;
+  }
+
+  public List<NoteModel> getBookNotes() {
+    return bookNotes;
+  }
+
+  public void setBookNotes(List<NoteModel> bookNotes) {
+    this.bookNotes = bookNotes;
   }
 
   public String getBookname() {

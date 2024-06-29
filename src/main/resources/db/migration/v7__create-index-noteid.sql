@@ -1,0 +1,1 @@
+create index idx_notes_noteid on public.notes using btree (noteid);

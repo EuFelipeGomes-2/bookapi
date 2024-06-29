@@ -91,6 +91,8 @@ public class UserService {
         UserModel user = userOptional.get();
 
         userRepository.delete(user);
+
+        // deletar livros e notas associadas ao usuario
       }
     } catch (Exception e) {
       throw new Exception(e.getMessage());

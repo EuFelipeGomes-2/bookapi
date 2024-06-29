@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.eufelipegomes.bookapi.dtos.BookDTO;
+import com.eufelipegomes.bookapi.dtos.BooksDTO;
 import com.eufelipegomes.bookapi.dtos.CreateBookDto;
 import com.eufelipegomes.bookapi.dtos.UpdateBookDTO;
 import com.eufelipegomes.bookapi.dtos.UserBooksDTO;
@@ -35,16 +36,29 @@ public class BookController {
   }
 
   @GetMapping("/")
-  public ResponseEntity<List<BookModel>> getBooks() {
+  public ResponseEntity<BooksDTO> getBooks() {
     try {
       List<BookModel> books = bookService.getBooks();
-      return ResponseEntity.status(HttpStatus.OK).body(books);
+
+      List<BookDTO> bookDTOs = books.stream().map(book -> new BookDTO(
+          book.getBookid(),
+          book.getUser().getUserid(),
+          book.getBookname(),
+          book.getBookauthor(),
+          book.getBookstatus(),
+          book.getDescription(),
+          book.getCompleted(),
+          book.getRating())).collect(Collectors.toList());
+
+      BooksDTO booksResponse = new BooksDTO(bookDTOs);
+
+      return ResponseEntity.status(HttpStatus.OK).body(booksResponse);
     } catch (CustomException e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
   }
 
-  @GetMapping("/{uid}")
+  @GetMapping("/user/{uid}")
   public ResponseEntity<UserBooksDTO> getBooksByUser(@PathVariable("uid") UUID userId) {
     try {
       List<BookModel> booksByUser = bookService.getBooksByUser(userId);
@@ -70,7 +84,7 @@ public class BookController {
     }
   }
 
-  @PostMapping("/{uid}")
+  @PostMapping("/user/{uid}")
   public ResponseEntity<BookDTO> createBook(@PathVariable("uid") UUID userId, @RequestBody CreateBookDto book) {
     try {
       var bookModel = new BookModel(book.bookname(), book.bookauthor(), book.bookstatus(), book.description(),
@@ -96,7 +110,7 @@ public class BookController {
     }
   }
 
-  @PutMapping("/{uid}")
+  @PutMapping("/book/{uid}")
   public ResponseEntity<BookModel> updateBookInfo(@PathVariable("uid") UUID bookId,
       @RequestBody UpdateBookDTO newBookInfo) {
     try {
@@ -110,7 +124,7 @@ public class BookController {
     }
   }
 
-  @DeleteMapping("/{uid}")
+  @DeleteMapping("/book/{uid}")
   public ResponseEntity<String> deleteBookInfo(@PathVariable("uid") UUID bookId) {
     try {
       bookService.deleteBook(bookId);
