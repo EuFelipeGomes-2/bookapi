@@ -1,6 +1,8 @@
 package com.eufelipegomes.bookapi.models;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -12,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -28,9 +31,13 @@ public class BookModel {
   @JsonManagedReference
   private UserModel user;
 
-  @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonManagedReference
   private List<NoteModel> bookNotes;
+
+  @ManyToMany(mappedBy = "books")
+  @JsonBackReference
+  private Set<CollectionModel> collections = new HashSet<>();
 
   private String bookname;
   private String bookauthor;

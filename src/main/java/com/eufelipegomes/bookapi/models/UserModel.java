@@ -1,6 +1,7 @@
 package com.eufelipegomes.bookapi.models;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import com.eufelipegomes.bookapi.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -34,13 +36,17 @@ public class UserModel implements UserDetails {
   private String password;
   private String useremail;
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonBackReference
   private List<BookModel> books;
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonBackReference
   private List<NoteModel> notes;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonBackReference
+  private Set<CollectionModel> collections = new HashSet<>();
 
   @Enumerated(EnumType.STRING)
   private UserRole role;

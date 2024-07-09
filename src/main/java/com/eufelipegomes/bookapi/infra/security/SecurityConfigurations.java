@@ -39,7 +39,14 @@ public class SecurityConfigurations {
             .requestMatchers(HttpMethod.DELETE, "/books/book/{uid}").hasRole("USER")
             .requestMatchers(HttpMethod.GET, "/books/notes/book/{bookid}").hasRole("USER")
             .requestMatchers(HttpMethod.POST, "/books/notes/user/{userId}/book/{bookId}").hasRole("USER")
-
+            .requestMatchers(HttpMethod.GET, "/user/collections/{uid}").hasRole("USER")
+            .requestMatchers(HttpMethod.POST, "/user/collections/").hasRole("USER")
+            .requestMatchers(HttpMethod.POST, "/user/collections/collection/{collectionId}/book/{bookId}")
+            .hasRole("USER")
+            .requestMatchers(HttpMethod.GET, "/user/collections/collection/{collectionId}/books").hasRole("USER")
+            .requestMatchers(HttpMethod.DELETE, "/user/collections/collection/{collectionId}/books/{bookId}")
+            .hasRole("USER")
+            .requestMatchers(HttpMethod.DELETE, "/user/collections/collection/{collectionId}").hasRole("USER")
             .anyRequest().authenticated())
 
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

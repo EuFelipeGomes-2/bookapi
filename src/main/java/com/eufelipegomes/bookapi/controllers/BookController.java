@@ -1,6 +1,5 @@
 package com.eufelipegomes.bookapi.controllers;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -23,7 +22,6 @@ import com.eufelipegomes.bookapi.dtos.UpdateBookDTO;
 import com.eufelipegomes.bookapi.dtos.UserBooksDTO;
 import com.eufelipegomes.bookapi.exceptions.CustomException;
 import com.eufelipegomes.bookapi.models.BookModel;
-import com.eufelipegomes.bookapi.models.UserModel;
 import com.eufelipegomes.bookapi.services.BookService;
 
 @Controller

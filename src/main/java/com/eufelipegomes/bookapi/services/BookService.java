@@ -120,4 +120,8 @@ public class BookService {
     }
   }
 
+  public Optional<BookModel> getBookById(UUID bookId) {
+    return bookRepository.findById(bookId);
+  }
+
 }

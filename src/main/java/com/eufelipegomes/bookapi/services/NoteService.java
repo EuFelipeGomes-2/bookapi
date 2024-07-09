@@ -4,11 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.eufelipegomes.bookapi.dtos.BookNoteDTO;
-import com.eufelipegomes.bookapi.dtos.NoteDTO;
 import com.eufelipegomes.bookapi.exceptions.CustomException;
 import com.eufelipegomes.bookapi.models.BookModel;
 import com.eufelipegomes.bookapi.models.NoteModel;

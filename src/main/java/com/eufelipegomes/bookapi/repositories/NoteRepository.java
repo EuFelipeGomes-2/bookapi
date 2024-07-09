@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.eufelipegomes.bookapi.models.BookModel;
 import com.eufelipegomes.bookapi.models.NoteModel;
-import com.eufelipegomes.bookapi.models.UserModel;
 
 @Repository
 public interface NoteRepository extends JpaRepository<NoteModel, UUID> {

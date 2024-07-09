@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.eufelipegomes.bookapi.dtos.UpdateUserDto;
@@ -91,8 +90,6 @@ public class UserService {
         UserModel user = userOptional.get();
 
         userRepository.delete(user);
-
-        // deletar livros e notas associadas ao usuario
       }
     } catch (Exception e) {
       throw new Exception(e.getMessage());
