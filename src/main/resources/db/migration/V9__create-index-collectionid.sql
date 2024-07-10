@@ -1,0 +1,1 @@
+create index idx_collections_collection_id on public.collections using btree (collection_id);

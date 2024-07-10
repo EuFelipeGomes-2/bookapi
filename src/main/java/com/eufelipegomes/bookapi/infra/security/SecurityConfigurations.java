@@ -40,7 +40,7 @@ public class SecurityConfigurations {
             .requestMatchers(HttpMethod.GET, "/books/notes/book/{bookid}").hasRole("USER")
             .requestMatchers(HttpMethod.POST, "/books/notes/user/{userId}/book/{bookId}").hasRole("USER")
             .requestMatchers(HttpMethod.GET, "/user/collections/{uid}").hasRole("USER")
-            .requestMatchers(HttpMethod.POST, "/user/collections/").hasRole("USER")
+            .requestMatchers(HttpMethod.POST, "/user/collections/{uid}").hasRole("USER")
             .requestMatchers(HttpMethod.POST, "/user/collections/collection/{collectionId}/book/{bookId}")
             .hasRole("USER")
             .requestMatchers(HttpMethod.GET, "/user/collections/collection/{collectionId}/books").hasRole("USER")

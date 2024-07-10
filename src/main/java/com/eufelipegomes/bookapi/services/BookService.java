@@ -14,9 +14,8 @@ import com.eufelipegomes.bookapi.repositories.BookRepository;
 
 @Service
 public class BookService {
-  private BookRepository bookRepository;
-
-  private UserService userService;
+  private final BookRepository bookRepository;
+  private final UserService userService;
 
   public BookService(BookRepository bookRepository, UserService userService) {
     this.bookRepository = bookRepository;
@@ -25,9 +24,7 @@ public class BookService {
 
   public List<BookModel> getBooks() {
     try {
-      List<BookModel> books = bookRepository.findAll();
-
-      return books;
+      return bookRepository.findAll();
     } catch (Exception e) {
       throw new CustomException(e.getMessage());
     }
@@ -37,9 +34,12 @@ public class BookService {
     Boolean userExists = userService.verifyUserById(userId);
     if (userExists) {
       Optional<UserModel> userOptional = userService.getUserById(userId);
-      UserModel user = userOptional.get();
-      List<BookModel> booksByUser = bookRepository.findBookByUser(user);
-      return booksByUser;
+      if (userOptional.isPresent()) {
+        UserModel user = userOptional.get();
+        return bookRepository.findBookByUser(user);
+      } else {
+        throw new CustomException("User not found.");
+      }
     } else {
       throw new CustomException("User not found.");
     }
@@ -47,16 +47,12 @@ public class BookService {
 
   public BookModel createBook(UUID userId, BookModel book) {
     try {
-      // Verifica se o usuário existe
       Boolean userExists = userService.verifyUserById(userId);
       if (userExists) {
-        // Obtém o usuário pelo ID
         Optional<UserModel> userOptional = userService.getUserById(userId);
         if (userOptional.isPresent()) {
           UserModel user = userOptional.get();
-          // Define o usuário para o livro
           book.setUser(user);
-          // Salva o livro
           return bookRepository.save(book);
         }
       }
@@ -66,39 +62,31 @@ public class BookService {
     }
   }
 
-  public BookModel editBookInfo(UUID bookid, UpdateBookDTO newBookInfo) throws Exception {
+  public BookModel editBookInfo(UUID bookId, UpdateBookDTO newBookInfo) throws Exception {
     try {
-      Optional<BookModel> book = bookRepository.findById(bookid);
-
-      if (book.isEmpty()) {
-        throw new CustomException("Book Not Found with the id: " + bookid);
+      Optional<BookModel> bookOptional = bookRepository.findById(bookId);
+      if (bookOptional.isEmpty()) {
+        throw new CustomException("Book Not Found with the id: " + bookId);
       } else {
-        BookModel bookModel = book.get();
-
+        BookModel bookModel = bookOptional.get();
         if (newBookInfo.bookname() != null) {
           bookModel.setBookname(newBookInfo.bookname());
         }
-
         if (newBookInfo.bookauthor() != null) {
           bookModel.setBookauthor(newBookInfo.bookauthor());
         }
-
         if (newBookInfo.description() != null) {
           bookModel.setDescription(newBookInfo.description());
         }
-
         if (newBookInfo.bookstatus() != null) {
           bookModel.setBookstatus(newBookInfo.bookstatus());
         }
-
         if (newBookInfo.completed() != null) {
           bookModel.setCompleted(newBookInfo.completed());
         }
-
         if (newBookInfo.rating() != null) {
           bookModel.setRating(newBookInfo.rating());
         }
-
         return bookRepository.save(bookModel);
       }
     } catch (Exception e) {
@@ -106,14 +94,13 @@ public class BookService {
     }
   }
 
-  public void deleteBook(UUID bookid) throws Exception {
+  public void deleteBook(UUID bookId, UUID userId) throws Exception {
     try {
-      Boolean bookExists = bookRepository.existsById(bookid);
-
-      if (bookExists == false) {
-        throw new CustomException("Book Not Found with the id: " + bookid);
+      Boolean bookExists = bookRepository.existsById(bookId);
+      if (!bookExists) {
+        throw new CustomException("Book Not Found with the id: " + bookId);
       } else {
-        bookRepository.deleteById(bookid);
+        bookRepository.deleteById(bookId);
       }
     } catch (Exception e) {
       throw new Exception(e.getMessage());
@@ -123,5 +110,4 @@ public class BookService {
   public Optional<BookModel> getBookById(UUID bookId) {
     return bookRepository.findById(bookId);
   }
-
 }

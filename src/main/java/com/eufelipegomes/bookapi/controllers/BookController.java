@@ -1,6 +1,7 @@
 package com.eufelipegomes.bookapi.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -125,7 +126,10 @@ public class BookController {
   @DeleteMapping("/book/{uid}")
   public ResponseEntity<String> deleteBookInfo(@PathVariable("uid") UUID bookId) {
     try {
-      bookService.deleteBook(bookId);
+      Optional<BookModel> book = bookService.getBookById(bookId);
+      BookModel bookModel = book.get();
+
+      bookService.deleteBook(bookId, bookModel.getUser().getUserid());
 
       return ResponseEntity.status(HttpStatus.OK).body("Book Deleted Sucess.");
     } catch (CustomException e) {
