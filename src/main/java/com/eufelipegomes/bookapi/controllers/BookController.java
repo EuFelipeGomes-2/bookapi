@@ -45,6 +45,9 @@ public class BookController {
           book.getBookname(),
           book.getBookauthor(),
           book.getBookstatus(),
+          book.getTotal_pages(),
+          book.getCurrent_page(),
+          book.getPublisher(),
           book.getDescription(),
           book.getCompleted(),
           book.getRating())).collect(Collectors.toList());
@@ -69,6 +72,9 @@ public class BookController {
           book.getBookname(),
           book.getBookauthor(),
           book.getBookstatus(),
+          book.getTotal_pages(),
+          book.getCurrent_page(),
+          book.getPublisher(),
           book.getDescription(),
           book.getCompleted(),
           book.getRating())).collect(Collectors.toList());
@@ -86,7 +92,9 @@ public class BookController {
   @PostMapping("/user/{uid}")
   public ResponseEntity<BookDTO> createBook(@PathVariable("uid") UUID userId, @RequestBody CreateBookDto book) {
     try {
-      var bookModel = new BookModel(book.bookname(), book.bookauthor(), book.bookstatus(), book.description(),
+      var bookModel = new BookModel(book.bookname(), book.bookauthor(), book.bookstatus(), book.total_pages(),
+          book.current_page(),
+          book.publisher(), book.description(),
           book.completed(), book.rating());
       BookModel createdBook = bookService.createBook(userId, bookModel);
 
@@ -97,6 +105,9 @@ public class BookController {
           createdBook.getBookname(),
           createdBook.getBookauthor(),
           createdBook.getBookstatus(),
+          createdBook.getTotal_pages(),
+          createdBook.getCurrent_page(),
+          createdBook.getPublisher(),
           createdBook.getDescription(),
           createdBook.getCompleted(),
           createdBook.getRating());

@@ -20,7 +20,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Books")
+@Table(name = "books")
 public class BookModel {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,6 +42,10 @@ public class BookModel {
   private String bookname;
   private String bookauthor;
   private String bookstatus;
+  private Integer total_pages;
+  private Integer current_page;
+  private String publisher;
+  
   private String description;
   private Boolean completed;
   private Float rating;
@@ -49,10 +53,13 @@ public class BookModel {
   public BookModel() {
   }
 
-  public BookModel(String name, String author, String status, String description, Boolean completed, Float rating) {
+  public BookModel(String name, String author, String status,Integer total_pages, Integer current_page, String publisher, String description, Boolean completed, Float rating) {
     this.bookname = name;
     this.bookauthor = author;
     this.bookstatus = status;
+    this.total_pages =total_pages;
+    this.current_page = current_page;
+    this.publisher = publisher;
     this.description = description;
     this.completed = completed;
     this.rating = rating;
@@ -104,6 +111,29 @@ public class BookModel {
 
   public void setBookstatus(String bookstatus) {
     this.bookstatus = bookstatus;
+  }
+  public int getTotal_pages() {
+    return total_pages;
+  }
+  
+  public void setTotal_pages(Integer total_pages) {
+    this.total_pages = total_pages;
+  }
+  
+  public int getCurrent_page() {
+    return current_page;
+  }
+  
+  public void setCurrent_page(Integer current_page) {
+    this.current_page = current_page;
+  }
+  
+  public String getPublisher() {
+    return publisher;
+  }
+  
+  public void setPublisher(String publisher) {
+    this.publisher = publisher;
   }
 
   public String getDescription() {

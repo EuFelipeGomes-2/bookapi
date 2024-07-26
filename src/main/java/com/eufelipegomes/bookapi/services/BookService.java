@@ -81,6 +81,15 @@ public class BookService {
         if (newBookInfo.bookstatus() != null) {
           bookModel.setBookstatus(newBookInfo.bookstatus());
         }
+        if (newBookInfo.total_pages() != null ){
+          bookModel.setTotal_pages(newBookInfo.total_pages());
+        }
+        if(newBookInfo.current_page() != null){
+          bookModel.setCurrent_page(newBookInfo.current_page());
+        }
+        if(newBookInfo.publisher() != null){
+          bookModel.setPublisher(newBookInfo.publisher());
+        }
         if (newBookInfo.completed() != null) {
           bookModel.setCompleted(newBookInfo.completed());
         }
