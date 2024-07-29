@@ -81,7 +81,6 @@ public class UserService {
   }
 
   public void deleteUser(UUID userId) throws Exception {
-    try {
       Optional<UserModel> userOptional = userRepository.findById(userId);
 
       if (userOptional.isEmpty()) {
@@ -91,9 +90,6 @@ public class UserService {
 
         userRepository.delete(user);
       }
-    } catch (Exception e) {
-      throw new Exception(e.getMessage());
-    }
 
   }
 
