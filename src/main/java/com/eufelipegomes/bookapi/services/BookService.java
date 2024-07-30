@@ -45,8 +45,7 @@ public class BookService {
     }
   }
 
-  public BookModel createBook(UUID userId, BookModel book) {
-    try {
+  public BookModel createBook(UUID userId, BookModel book) throws Exception {
       Boolean userExists = userService.verifyUserById(userId);
       if (userExists) {
         Optional<UserModel> userOptional = userService.getUserById(userId);
@@ -56,14 +55,10 @@ public class BookService {
           return bookRepository.save(book);
         }
       }
-      throw new CustomException("User Not Found");
-    } catch (Exception e) {
-      throw new CustomException("Error while creating the book: " + e.getMessage());
-    }
+      throw new CustomException("User Not Found"); 
   }
 
   public BookModel editBookInfo(UUID bookId, UpdateBookDTO newBookInfo) throws Exception {
-    try {
       Optional<BookModel> bookOptional = bookRepository.findById(bookId);
       if (bookOptional.isEmpty()) {
         throw new CustomException("Book Not Found with the id: " + bookId);
@@ -98,22 +93,15 @@ public class BookService {
         }
         return bookRepository.save(bookModel);
       }
-    } catch (Exception e) {
-      throw new Exception(e.getMessage());
-    }
   }
 
   public void deleteBook(UUID bookId, UUID userId) throws Exception {
-    try {
       Boolean bookExists = bookRepository.existsById(bookId);
       if (!bookExists) {
         throw new CustomException("Book Not Found with the id: " + bookId);
       } else {
         bookRepository.deleteById(bookId);
       }
-    } catch (Exception e) {
-      throw new Exception(e.getMessage());
-    }
   }
 
   public Optional<BookModel> getBookById(UUID bookId) {

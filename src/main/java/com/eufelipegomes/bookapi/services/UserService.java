@@ -57,7 +57,6 @@ public class UserService {
   }
 
   public UserModel updateUserInfo(UpdateUserDto newUserInfo, UUID userId) throws Exception {
-    try {
       Optional<UserModel> userOptional = userRepository.findById(userId);
 
       if (userOptional.isEmpty()) {
@@ -74,10 +73,6 @@ public class UserService {
 
         return userRepository.save(user);
       }
-
-    } catch (Exception e) {
-      throw new Exception(e.getMessage());
-    }
   }
 
   public void deleteUser(UUID userId) throws Exception {
@@ -102,5 +97,7 @@ public class UserService {
       throw new Exception(e.getMessage());
     }
   }
+
+  
 
 }

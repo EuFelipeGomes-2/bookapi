@@ -1,6 +1,7 @@
 package com.eufelipegomes.bookapi.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -9,15 +10,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.eufelipegomes.bookapi.dtos.UpdateUserDto;
 import com.eufelipegomes.bookapi.exceptions.CustomException;
 import com.eufelipegomes.bookapi.models.UserModel;
 import com.eufelipegomes.bookapi.repositories.UserRepository;
@@ -111,5 +111,41 @@ public class UserServiceTest {
         org.junit.jupiter.api.Assertions.assertEquals("User Not Found with the id: " + userId, thrown.getMessage());
     }
 
+    @Test
+    @DisplayName("Should update user info successfully")
+    void testUpdateUserInfoSuccess() throws Exception {
+        UUID userId = UUID.randomUUID();
+        UserModel userModel = new UserModel("Felipe", "felipe@gmail.com", "felipe1234");
+        userModel.setUserid(userId);
 
+        UpdateUserDto newUserInfo = new UpdateUserDto("Felipe Updated", "felipe.updated@gmail.com");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(userModel));
+        when(userRepository.save(any(UserModel.class))).thenReturn(userModel);
+
+        UserModel updatedUser = userService.updateUserInfo(newUserInfo, userId);
+
+        assertEquals(newUserInfo.username(), updatedUser.getUsername());
+        assertEquals(newUserInfo.useremail(), updatedUser.getUseremail());
+
+        verify(userRepository).findById(userId);
+        verify(userRepository).save(userModel);
+    }
+
+    @Test
+    @DisplayName("Should throw CustomException when user is not found")
+    void testUpdateUserInfoUserNotFound() {
+        UUID userId = UUID.randomUUID();
+        UpdateUserDto newUserInfo = new UpdateUserDto("Felipe Updated", "felipe.updated@gmail.com");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        CustomException exception = assertThrows(CustomException.class, () -> {
+            userService.updateUserInfo(newUserInfo, userId);
+        });
+
+        assertEquals("User Not Found with the id: " + userId, exception.getMessage());
+
+        verify(userRepository).findById(userId);
+    }
 }
