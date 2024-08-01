@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.eufelipegomes.bookapi.models.UserModel;
 
+
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, UUID> {
-  UserDetails findByUsername(String username);
+  UserDetails findByUseremail(String useremail);
 }

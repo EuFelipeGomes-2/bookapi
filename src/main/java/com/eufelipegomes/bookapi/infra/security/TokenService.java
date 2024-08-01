@@ -22,7 +22,7 @@ public class TokenService {
     try {
       Algorithm algorithm = Algorithm.HMAC256(secret);
 
-      String token = JWT.create().withIssuer("book-api").withSubject(user.getUsername())
+      String token = JWT.create().withIssuer("book-api").withSubject(user.getUseremail())
           .withExpiresAt(generateExpirationDate()).sign(algorithm);
       return token;
     } catch (JWTCreationException exception) {

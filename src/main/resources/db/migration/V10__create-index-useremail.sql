@@ -1,0 +1,1 @@
+create index idx_users_useremail on public.users using btree (useremail);
